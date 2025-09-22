@@ -28,7 +28,6 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - Viikoittainen tilannepalaveri.
 - Kanban/Trello taululla tehtävien seuranta.
 - Testaus yksikkötestein (esim. Jest/React Testing Library).
-- Tehtävät, työmäärät ja työnjako
 
 ### Tehtävät, työmäärät ja työnjako*
 - Projektin alustus: React-projektin perustaminen, GitHub-repo.
