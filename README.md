@@ -26,7 +26,6 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - Versionhallinta GitHubissa (branch-strategia: main/dev/feature).
 - Koodikatselmoinnit tiimissä.
 - Viikoittainen tilannepalaveri.
-- Kanban/Trello taululla tehtävien seuranta.
 - Testaus yksikkötestein (esim. Jest/React Testing Library).
 
 ### Tehtävät, työmäärät ja työnjako*
@@ -37,6 +36,8 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - Tyylittely ja UX: Responsiivinen käyttöliittymä, visuaalinen viimeistely.
 - Testaus ja korjaukset: Toiminnallisuuksien ja rajapinnan testaus.
 - Dokumentointi: Projektin ja koodin dokumentaatio.
+
+Työnjako määritellään tarkemmin myöhemmässä vaiheessa projektin etenemisen ja tiimin jäsenten vahvuuksien perusteella.
 
 ### Aikataulu
 Kokonaisprojekti kestää noin 7-8 viikkoa:
