@@ -1,4 +1,4 @@
-# Sovellus
+# Tietovisa
 
 ## Johdanto
-- Teemme Tietovisaa Reactilla
+Projekti on tietovisa käyttäen Open Trivia Databasen API:ta 
