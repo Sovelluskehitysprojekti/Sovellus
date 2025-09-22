@@ -16,19 +16,42 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - Sovellus toimii selaimessa ja sitä voi laajentaa myöhemmin.
 
 ### Resurssit
-
+- Ohjelmistot: Node.js, npm/yarn, React, mahdollinen UI-kirjasto (esim. TailwindCSS / Material UI).
+- Rajapinta: Open Trivia Database API.
+- Työkalut: Git ja GitHub versionhallintaan, Visual Studio Code kehitykseen, Trello/Jira tehtävienhallintaan.
+- Henkilöresurssit: 2 hengen tiimi.
+- AI työkaluja, kuten Copilot tai ChatGPT vian hallintaan jne.
 
 ### Käytänteet
-
+- Versionhallinta GitHubissa (branch-strategia: main/dev/feature).
+- Koodikatselmoinnit tiimissä.
+- Viikoittainen tilannepalaveri.
+- Kanban/Trello taululla tehtävien seuranta.
+- Testaus yksikkötestein (esim. Jest/React Testing Library).
+- Tehtävät, työmäärät ja työnjako
 
 ### Tehtävät, työmäärät ja työnjako*
-
+- Projektin alustus (1 pv): React-projektin perustaminen, GitHub-repo.
+- Käyttöliittymä (3–4 pv): Aloitusnäkymä, pelinäkymä, lopputulosnäkymä.
+- API-integraatio (2–3 pv): Kysymysten haku OTDB:stä, tietojen esittäminen.
+- Pelin logiikka (2–3 pv): Kysymysten arvonta, vastausten tarkistus, pisteytys.
+- Tyylittely ja UX (2–3 pv): Responsiivinen käyttöliittymä, visuaalinen viimeistely.
+- Testaus ja korjaukset (2–3 pv): Toiminnallisuuksien ja rajapinnan testaus.
+- Dokumentointi (1–2 pv): Projektin ja koodin dokumentaatio.
 
 ### Aikataulu
+Kokonaisprojekti kestää noin 7-8 viikkoa:
 
+Viikot 1-2 – projektin alustus, API-kokeilut, käyttöliittymän runko. 
+Viikot 3-4 – API-integraatio, pelilogiikka.
+Viikot 5-6 – käyttöliittymän viimeistely, testaus.
+Viikot 7-8 – virheiden korjaus, dokumentointi ja palautus/esitys.
 
 ### Riskit ja niiden hallinta
-
+- API:n kaatuminen tai muutokset: toteutetaan varmistus, että peli toimii myös offline-tilassa rajatulla kysymyspaketilla.
+- Aikataulun venyminen: pilkotaan tehtävät pieniksi ja seurataan edistymistä viikoittain.
+- Osaamispuutteet Reactissa: varataan aikaa oppimiseen ja pariohjelmointiin.
+- Yhteistyön haasteet: selkeä kommunikointi, viikkopalaverit ja versionhallinnan säännöt.
 
 ### Yhteenveto
 Projektissa toteutetaan selainpohjainen tietovisapeli Reactilla hyödyntäen Open Trivia Database -rajapintaa. Työ jakautuu käyttöliittymän, API-integraation ja pelilogiikan toteuttamiseen. Projekti arvioidaan onnistuneeksi, kun käyttäjä voi pelata tietovisaa alusta loppuun, pisteet lasketaan oikein ja käyttöliittymä on selkeä.
