@@ -18,7 +18,7 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 ### Resurssit
 - Ohjelmistot: Node.js, npm/yarn, React, mahdollinen UI-kirjasto (esim. TailwindCSS / Material UI).
 - Rajapinta: Open Trivia Database API.
-- Työkalut: Git ja GitHub versionhallintaan, Visual Studio Code kehitykseen, Trello/Jira tehtävienhallintaan.
+- Työkalut: Git ja GitHub versionhallintaan, Visual Studio Code kehitykseen,
 - Henkilöresurssit: 2 hengen tiimi.
 - AI työkaluja, kuten Copilot tai ChatGPT vian hallintaan jne.
 
@@ -30,14 +30,16 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - Testaus yksikkötestein (esim. Jest/React Testing Library).
 - Tehtävät, työmäärät ja työnjako
 
-### Tehtävät, työmäärät ja työnjako*
-- Projektin alustus (1 pv): React-projektin perustaminen, GitHub-repo.
-- Käyttöliittymä (3–4 pv): Aloitusnäkymä, pelinäkymä, lopputulosnäkymä.
-- API-integraatio (2–3 pv): Kysymysten haku OTDB:stä, tietojen esittäminen.
-- Pelin logiikka (2–3 pv): Kysymysten arvonta, vastausten tarkistus, pisteytys.
-- Tyylittely ja UX (2–3 pv): Responsiivinen käyttöliittymä, visuaalinen viimeistely.
-- Testaus ja korjaukset (2–3 pv): Toiminnallisuuksien ja rajapinnan testaus.
-- Dokumentointi (1–2 pv): Projektin ja koodin dokumentaatio.
+### Tehtävät, työmäärät ja työnjako
+- Projektin alustus: React-projektin perustaminen, GitHub-repo.
+- Käyttöliittymä : Aloitusnäkymä, pelinäkymä, lopputulosnäkymä.
+- API-integraatio: Kysymysten haku OTDB:stä, tietojen esittäminen.
+- Pelin logiikka: Kysymysten arvonta, vastausten tarkistus, pisteytys.
+- Tyylittely ja UX: Responsiivinen käyttöliittymä, visuaalinen viimeistely.
+- Testaus ja korjaukset: Toiminnallisuuksien ja rajapinnan testaus.
+- Dokumentointi: Projektin ja koodin dokumentaatio.
+
+Työn jako ja työmäärät määritellään jälkeenpäin.
 
 ### Aikataulu
 Kokonaisprojekti kestää noin 7-8 viikkoa:
