@@ -42,10 +42,10 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 ### Aikataulu
 Kokonaisprojekti kestää noin 7-8 viikkoa:
 
-Viikot 1-2 – projektin alustus, API-kokeilut, käyttöliittymän runko. 
-Viikot 3-4 – API-integraatio, pelilogiikka.
-Viikot 5-6 – käyttöliittymän viimeistely, testaus.
-Viikot 7-8 – virheiden korjaus, dokumentointi ja palautus/esitys.
+- Viikot 1-2 – projektin alustus, API-kokeilut, käyttöliittymän runko. 
+- Viikot 3-4 – API-integraatio, pelilogiikka.
+- Viikot 5-6 – käyttöliittymän viimeistely, testaus.
+- Viikot 7-8 – virheiden korjaus, dokumentointi ja palautus/esitys.
 
 ### Riskit ja niiden hallinta
 - API:n kaatuminen tai muutokset: toteutetaan varmistus, että peli toimii myös offline-tilassa rajatulla kysymyspaketilla.
