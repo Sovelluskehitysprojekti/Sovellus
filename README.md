@@ -10,10 +10,10 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - **Komponentti** – React-sovelluksen rakennuspalikka, joka vastaa tietystä toiminnallisuudesta tai näkymästä.
 
 ### Tavoite
--Toteuttaa interaktiivinen ja helppokäyttöinen tietovisapeli.
--Käyttäjä voi valita kysymyksiä eri aiheista ja vaikeustasoista.
--Pisteytys näkyy reaaliaikaisesti pelin lopussa.
--Sovellus toimii selaimessa ja sitä voi laajentaa myöhemmin.
+- Toteuttaa interaktiivinen ja helppokäyttöinen tietovisapeli.
+- Käyttäjä voi valita kysymyksiä eri aiheista ja vaikeustasoista.
+- Pisteytys näkyy reaaliaikaisesti pelin lopussa.
+- Sovellus toimii selaimessa ja sitä voi laajentaa myöhemmin.
 
 ### Resurssit
 
