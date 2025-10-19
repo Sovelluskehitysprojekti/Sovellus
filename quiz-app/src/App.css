@@ -1,123 +1,184 @@
-/* Reset default margins and paddings */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Full viewport flex center */
 body, #root {
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Arial', sans-serif;
-  background-color: #1e3a8a;
-  color: #fff;
+  background: linear-gradient(135deg, #1e3a8a, #9333ea, #f97316);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  font-family: "Inter", sans-serif;
+  color: #111;
 }
 
-/* Container for all pages */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Container */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 800px;
-  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  color: #111; /* Default text black */
+  transition: all 0.3s ease;
 }
 
-/* Landing page */
+/* Landing Page */
 .landing-page h1 {
-  font-size: 3rem;
-  color: #ffdd57;
-  margin-bottom: 20px;
+  font-size: 2.6rem;
+  color: #1e3a8a;
+  margin-bottom: 10px;
 }
 
 .landing-page p {
-  font-size: 1.2rem;
-  margin-bottom: 40px;
-  text-align: center;
+  color: #4b5563;
+  margin-bottom: 25px;
 }
 
-.landing-page button {
-  padding: 15px 40px;
-  font-size: 1.2rem;
-  background: linear-gradient(90deg, #ff0000, #ff9900, #33cc33, #3399ff, #9933ff);
-  color: #fff;
+.selectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.selectors label {
+  font-weight: 500;
+  color: #111;
+}
+
+select {
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  color: #111; /* Black text in dropdowns */
+  font-size: 1rem;
+}
+
+select:focus {
+  outline: 2px solid #6366f1;
+}
+
+/* Buttons */
+.primary-btn, .secondary-btn {
+  padding: 12px 28px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1rem;
   transition: 0.3s;
 }
 
-.landing-page button:hover {
-  transform: scale(1.1);
+.primary-btn {
+  background: linear-gradient(90deg, #2563eb, #9333ea);
+  color: #fff;
 }
 
-/* Trivia page */
-.trivia-score {
-  font-size: 1.5rem;
+.primary-btn:hover {
+  transform: scale(1.05);
+}
+
+.secondary-btn {
+  background: #e5e7eb;
+  color: #111;
+  margin-top: 20px;
+}
+
+.secondary-btn:hover {
+  background: #d1d5db;
+}
+
+/* Trivia Header */
+.trivia-header {
+  text-align: right;
+  color: #1e3a8a;
+  font-weight: 600;
   margin-bottom: 20px;
-  text-align: center;
-  background: #3333ff;
-  padding: 10px 0;
-  border-radius: 8px;
-  width: 100%;
 }
 
+/* Question Card */
 .question-card {
-  background: #002366;
+  background: #fefefe; /* Light card background */
   padding: 30px;
   border-radius: 15px;
   width: 100%;
   text-align: center;
   margin-bottom: 20px;
+  color: #111; /* Ensure black text */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .question-card h2 {
+  font-size: 1.4rem;
   margin-bottom: 20px;
+  color: #111; /* Black question text */
 }
 
-.question-card button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
+.answers-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.answer-btn {
+  background: #e0e7ff; /* Light blue button */
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
   padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
   cursor: pointer;
-  font-weight: bold;
-  color: #000;
+  font-weight: 600;
+  color: #111; /* Black answer text */
+  transition: background 0.3s, transform 0.2s;
 }
 
-/* Result page */
-.result-container {
-  text-align: center;
-  margin-top: 30px;
+.answer-btn:hover {
+  background: #c7d2fe;
+  transform: scale(1.02);
 }
 
+/* Result Page */
 .result-container h2 {
   font-size: 2rem;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+.result-message {
+  color: #4b5563;
   margin-bottom: 20px;
+  font-size: 1.1rem;
 }
 
-.result-container button {
-  padding: 10px 20px;
-  background: #4d88ff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
+/* Scoreboard */
+.scoreboard {
+  margin-top: 30px;
+  background: #f3f4f6;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #1e3a8a;
 }
 
-/* Loading / Error screen */
+/* Loading/Error */
 .loading-container {
-  text-align: center;
   font-size: 1.2rem;
+  color: #111;
+  text-align: center;
 }
