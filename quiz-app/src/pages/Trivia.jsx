@@ -20,12 +20,12 @@ const Trivia = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // initial
+  // initial from router
   const startDifficulty = location.state?.difficulty || "easy";
   const startGroupId = location.state?.groupId || "any";
   const startSubcat = location.state?.subcategoryId || null;
 
-  // editable in-place
+  // editable in-place (QuickSwitch)
   const [difficulty, setDifficulty] = useState(startDifficulty);
   const [groupId, setGroupId] = useState(startGroupId);
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(startSubcat);
@@ -38,6 +38,7 @@ const Trivia = () => {
   const [error, setError] = useState(null);
   const [showQuickSwitch, setShowQuickSwitch] = useState(false);
 
+  // build try-list for group (shuffled)
   const categoryTryList = useMemo(() => {
     if (selectedSubcategoryId) return [selectedSubcategoryId];
     const group = getGroupById(groupId);
@@ -45,8 +46,7 @@ const Trivia = () => {
     return shuffle(group.categoryIds);
   }, [groupId, selectedSubcategoryId]);
 
-  // ---- Fetch with caching + token + 429 retry + group fallback
-  // forceFresh bypasses cache (used by Restart)
+  // Fetch with caching + token + 429 retry + group fallback
   const fetchQuestions = async (forceFresh = false, retryCount = 0) => {
     setLoading(true);
     setError(null);
@@ -65,7 +65,6 @@ const Trivia = () => {
       return;
     }
 
-    // Helper to fetch with token and handle token error codes
     const fetchWithToken = async (categoryId, token, tokenRetryDepth = 0, rateLimitDepth = 0) => {
       let url = `https://opentdb.com/api.php?amount=10&type=multiple&difficulty=${difficulty}`;
       if (categoryId) url += `&category=${categoryId}`;
@@ -81,21 +80,14 @@ const Trivia = () => {
       }
 
       const data = await res.json();
-      // OpenTDB response_code handling:
-      // 0 = Success
-      // 1 = No Results
-      // 2 = Invalid Parameter
-      // 3 = Token Not Found
-      // 4 = Token Empty (exhausted)
+      // 0 ok, 1 no results, 2 invalid params, 3 token missing/invalid, 4 token exhausted
       if (data?.response_code === 3) {
-        // token invalid → request new token and retry once
         if (tokenRetryDepth < 1) {
           const newToken = await requestNewToken();
           if (newToken) return fetchWithToken(categoryId, newToken, tokenRetryDepth + 1, rateLimitDepth);
         }
       }
       if (data?.response_code === 4) {
-        // token exhausted → reset and retry once
         if (tokenRetryDepth < 2) {
           const reset = await resetToken();
           if (reset) return fetchWithToken(categoryId, reset, tokenRetryDepth + 1, rateLimitDepth);
@@ -122,9 +114,8 @@ const Trivia = () => {
 
       if (data?.results && data.results.length > 0) {
         localStorage.setItem(cacheKeyBase, JSON.stringify(data.results)); // store raw
-        setQuestions(shuffle(data.results)); // display shuffled
+        setQuestions(shuffle(data.results)); // show shuffled
       } else if (cached) {
-        // fallback to cached shuffled so it still feels different
         setQuestions(shuffle(JSON.parse(cached)));
       } else {
         setError("No questions found for this selection.");
@@ -145,6 +136,7 @@ const Trivia = () => {
     }
   };
 
+  // load when settings change
   useEffect(() => {
     setQuestions([]);
     setCurrentIndex(0);
@@ -161,7 +153,7 @@ const Trivia = () => {
     else setShowResult(true);
   };
 
-  // Restart = fetch fresh (bypass cache); token ensures unseen until exhausted
+  // Restart = fetch fresh (bypass cache)
   const restartGame = () => {
     setScore(0);
     setCurrentIndex(0);
@@ -187,9 +179,7 @@ const Trivia = () => {
     return (
       <div className="app-container loading-container">
         <h2>Error: {error}</h2>
-        <button className="primary-btn" onClick={() => fetchQuestions(true)}>
-          Retry
-        </button>
+        <button className="primary-btn" onClick={() => fetchQuestions(true)}>Retry</button>
       </div>
     );
 
@@ -212,7 +202,12 @@ const Trivia = () => {
       </div>
 
       {showResult ? (
-        <Result score={score} total={questions.length} restartGame={restartGame} />
+        <Result
+          score={score}
+          total={questions.length}
+          restartGame={restartGame}
+          meta={{ difficulty, groupId, subcategoryId: selectedSubcategoryId }}
+        />
       ) : (
         <QuestionCard question={questions[currentIndex]} handleAnswer={handleAnswer} />
       )}

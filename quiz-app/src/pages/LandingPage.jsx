@@ -2,54 +2,83 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listAllGroups, getGroupById } from "../utils/categoryGroups";
 
+// relative time like “2h ago”
+function timeAgo(iso) {
+  const then = new Date(iso).getTime();
+  const now = Date.now();
+  const s = Math.max(1, Math.floor((now - then) / 1000));
+  if (s < 60) return `${s}s ago`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 7) return `${d}d ago`;
+  // fallback: DD/MM/YYYY
+  return new Date(then).toLocaleDateString("en-GB");
+}
+
 const LandingPage = () => {
   const navigate = useNavigate();
   const [difficulty, setDifficulty] = useState("easy");
   const [groupId, setGroupId] = useState("any");
   const [bestScore, setBestScore] = useState(0);
-  const [recentScores, setRecentScores] = useState([]);
 
-  // "More specific?" toggle + chosen subcategory
   const [showSpecifics, setShowSpecifics] = useState(false);
   const [subcategoryId, setSubcategoryId] = useState("");
+  const [recentScores, setRecentScores] = useState([]);
+
+  const groups = useMemo(() => listAllGroups(), []);
+  const currentGroup = useMemo(() => getGroupById(groupId), [groupId]);
+  const hasSpecifics = !!(currentGroup?.specifics && currentGroup.specifics.length > 0);
 
   useEffect(() => {
     const storedBest = localStorage.getItem("triviaBestScore");
     if (storedBest) setBestScore(Number(storedBest));
 
-    const recent = localStorage.getItem("triviaRecentScores");
-    if (recent) {
-      try {
-        setRecentScores(JSON.parse(recent));
-      } catch {
-        setRecentScores([]);
+    // Load + de-dup recent
+    try {
+      const raw = localStorage.getItem("triviaRecentScores");
+      const parsed = raw ? JSON.parse(raw) : [];
+      const seen = new Set();
+      const deduped = [];
+      for (const r of parsed) {
+        const key = [r.score, r.total, r.groupId, r.subcategoryId ?? "null", r.difficulty, r.date].join("|");
+        if (!seen.has(key)) {
+          seen.add(key);
+          deduped.push(r);
+        }
+        if (deduped.length >= 5) break;
       }
+      localStorage.setItem("triviaRecentScores", JSON.stringify(deduped));
+      setRecentScores(deduped);
+    } catch {
+      setRecentScores([]);
     }
   }, []);
 
-  // Reset specifics when switching group
+  // Reset specifics on group change
   useEffect(() => {
     setSubcategoryId("");
     setShowSpecifics(false);
   }, [groupId]);
-
-  const groups = useMemo(() => listAllGroups(), []);
-  const currentGroup = useMemo(() => getGroupById(groupId), [groupId]);
 
   const handleStart = () => {
     navigate("/trivia", {
       state: {
         difficulty,
         groupId,
-        subcategoryId: showSpecifics && subcategoryId ? Number(subcategoryId) : null,
+        subcategoryId: hasSpecifics && showSpecifics && subcategoryId ? Number(subcategoryId) : null,
       },
     });
   };
 
+  const topicName = (gid) => getGroupById(gid)?.name || "Any Topic";
+
   return (
     <div className="app-container landing-page">
       <h1>🎯 Trivia Quest</h1>
-      <p>Pick a topic and difficulty — go broad or get specific.</p>
+      <p>Pick a topic and difficulty — go broad, or drill into something specific.</p>
 
       <div className="selectors">
         <label>
@@ -71,8 +100,7 @@ const LandingPage = () => {
         </label>
       </div>
 
-      {/* Only show specifics control if this group actually has specifics */}
-      {groupId !== "any" && currentGroup.specifics.length > 0 && (
+      {groupId !== "any" && hasSpecifics && (
         <div className="specifics-wrap">
           <button
             className="secondary-btn"
@@ -101,24 +129,22 @@ const LandingPage = () => {
 
       <button className="primary-btn" onClick={handleStart}>Start Game</button>
 
-      <div className="scoreboard">
+      {/* Stats / Recent */}
+      <div className="scoreboard" style={{ width: "100%", textAlign: "left", marginTop: "1.25rem" }}>
         <h3>🏆 Best Score: {bestScore}</h3>
 
-        {/* Recent scores (last 5) */}
         {recentScores.length > 0 && (
-          <div style={{ marginTop: 10, textAlign: "left" }}>
-            <strong>Recent:</strong>
-            <ul style={{ marginTop: 6, paddingLeft: 18 }}>
-              {recentScores.slice(0, 5).map((r, i) => {
-                const gName = getGroupById(r.groupId)?.name || "Any";
-                const when = new Date(r.date).toLocaleDateString();
-                return (
-                  <li key={`${r.date}-${i}`}>
-                    {when}: {r.score}/{r.total} · {gName} · {r.difficulty}
-                    {r.subcategoryId ? ` · Sub ${r.subcategoryId}` : ""}
-                  </li>
-                );
-              })}
+          <div className="recent-wrap">
+            <div className="recent-header">Recent</div>
+            <ul className="recent-list">
+              {recentScores.map((r, i) => (
+                <li className="recent-item" key={i}>
+                  <span className="recent-time">{timeAgo(r.date)}</span>
+                  <span className="recent-score">{r.score}/{r.total}</span>
+                  <span className="recent-badge topic">{topicName(r.groupId)}</span>
+                  <span className="recent-badge diff">{r.difficulty}</span>
+                </li>
+              ))}
             </ul>
           </div>
         )}

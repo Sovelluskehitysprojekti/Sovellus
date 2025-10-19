@@ -1,18 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const Result = ({ score, total, restartGame, meta }) => {
+  // Prevent duplicate saves (e.g., React Strict Mode double-invoking effects in dev)
+  const didSave = useRef(false);
+
   useEffect(() => {
-    // Best score
-    const best = localStorage.getItem("triviaBestScore");
-    if (!best || score > Number(best)) {
-      localStorage.setItem("triviaBestScore", score);
+    if (didSave.current) return;
+    didSave.current = true;
+
+    // Update best score
+    const best = Number(localStorage.getItem("triviaBestScore") || 0);
+    if (score > best) {
+      localStorage.setItem("triviaBestScore", String(score));
     }
 
-    // Recent scores (keep last 5)
-    const recentRaw = localStorage.getItem("triviaRecentScores");
+    // Append to "recent" (keep max 5)
+    const raw = localStorage.getItem("triviaRecentScores");
     let recent = [];
     try {
-      recent = recentRaw ? JSON.parse(recentRaw) : [];
+      recent = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(recent)) recent = [];
     } catch {
       recent = [];
     }
@@ -23,18 +30,30 @@ const Result = ({ score, total, restartGame, meta }) => {
       total,
       difficulty: meta?.difficulty || "easy",
       groupId: meta?.groupId || "any",
-      subcategoryId: meta?.subcategoryId || null,
+      subcategoryId: meta?.subcategoryId ?? null,
     };
 
-    const updated = [entry, ...recent].slice(0, 5);
+    // De-dup: remove identical existing entry (same score/total/topic/difficulty/subcategory)
+    const cleaned = recent.filter(
+      (r) =>
+        !(
+          r.score === entry.score &&
+          r.total === entry.total &&
+          r.groupId === entry.groupId &&
+          r.subcategoryId === entry.subcategoryId &&
+          r.difficulty === entry.difficulty
+        )
+    );
+
+    const updated = [entry, ...cleaned].slice(0, 5);
     localStorage.setItem("triviaRecentScores", JSON.stringify(updated));
   }, [score, total, meta]);
 
   const ratio = total ? score / total : 0;
   const message =
-    ratio > 0.8 ? "🌟 Outstanding!"
-    : ratio > 0.5 ? "👏 Nice work!"
-    : "💪 Keep practicing!";
+    ratio > 0.8 ? "🌟 Outstanding!" :
+    ratio > 0.5 ? "👏 Nice work!" :
+    "💪 Keep practicing!";
 
   return (
     <div className="result-container">
