@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listAllGroups, getGroupById } from "../utils/categoryGroups";
+import LeaderboardTop10 from "../components/LeaderboardTop10";
 
-// relative time like “2h ago”
+// Relative time like "2h ago"
 function timeAgo(iso) {
   const then = new Date(iso).getTime();
   const now = Date.now();
@@ -14,7 +15,6 @@ function timeAgo(iso) {
   if (h < 24) return `${h}h ago`;
   const d = Math.floor(h / 24);
   if (d < 7) return `${d}d ago`;
-  // fallback: DD/MM/YYYY
   return new Date(then).toLocaleDateString("en-GB");
 }
 
@@ -36,10 +36,10 @@ const LandingPage = () => {
     const storedBest = localStorage.getItem("triviaBestScore");
     if (storedBest) setBestScore(Number(storedBest));
 
-    // Load + de-dup recent
     try {
       const raw = localStorage.getItem("triviaRecentScores");
       const parsed = raw ? JSON.parse(raw) : [];
+      // dedupe and clamp to 5
       const seen = new Set();
       const deduped = [];
       for (const r of parsed) {
@@ -57,7 +57,6 @@ const LandingPage = () => {
     }
   }, []);
 
-  // Reset specifics on group change
   useEffect(() => {
     setSubcategoryId("");
     setShowSpecifics(false);
@@ -129,7 +128,7 @@ const LandingPage = () => {
 
       <button className="primary-btn" onClick={handleStart}>Start Game</button>
 
-      {/* Stats / Recent */}
+      {/* Best / Recent */}
       <div className="scoreboard" style={{ width: "100%", textAlign: "left", marginTop: "1.25rem" }}>
         <h3>🏆 Best Score: {bestScore}</h3>
 
@@ -149,6 +148,9 @@ const LandingPage = () => {
           </div>
         )}
       </div>
+
+      {/* Global leaderboard */}
+      <LeaderboardTop10 />
     </div>
   );
 };

@@ -1,20 +1,19 @@
 import React, { useEffect, useRef } from "react";
+import SubmitScore from "./SubmitScore";
 
 const Result = ({ score, total, restartGame, meta }) => {
-  // Prevent duplicate saves (e.g., React Strict Mode double-invoking effects in dev)
+  // Prevent duplicate saves in React Strict Mode (dev)
   const didSave = useRef(false);
 
   useEffect(() => {
     if (didSave.current) return;
     didSave.current = true;
 
-    // Update best score
+    // Best score
     const best = Number(localStorage.getItem("triviaBestScore") || 0);
-    if (score > best) {
-      localStorage.setItem("triviaBestScore", String(score));
-    }
+    if (score > best) localStorage.setItem("triviaBestScore", String(score));
 
-    // Append to "recent" (keep max 5)
+    // Recent (keep 5)
     const raw = localStorage.getItem("triviaRecentScores");
     let recent = [];
     try {
@@ -33,7 +32,7 @@ const Result = ({ score, total, restartGame, meta }) => {
       subcategoryId: meta?.subcategoryId ?? null,
     };
 
-    // De-dup: remove identical existing entry (same score/total/topic/difficulty/subcategory)
+    // Remove identical existing entry to avoid duplicates
     const cleaned = recent.filter(
       (r) =>
         !(
@@ -51,15 +50,19 @@ const Result = ({ score, total, restartGame, meta }) => {
 
   const ratio = total ? score / total : 0;
   const message =
-    ratio > 0.8 ? "🌟 Outstanding!" :
-    ratio > 0.5 ? "👏 Nice work!" :
-    "💪 Keep practicing!";
+    ratio > 0.8 ? "🌟 Outstanding!"
+    : ratio > 0.5 ? "👏 Nice work!"
+    : "💪 Keep practicing!";
 
   return (
     <div className="result-container">
       <h2>Your Score: {score} / {total}</h2>
       <p className="result-message">{message}</p>
+
       <button className="primary-btn" onClick={restartGame}>Play Again</button>
+
+      {/* Leaderboard submit */}
+      <SubmitScore score={score} total={total} onSubmitted={() => { /* optional toast */ }} />
     </div>
   );
 };
