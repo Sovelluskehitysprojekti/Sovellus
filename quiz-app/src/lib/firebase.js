@@ -7,13 +7,13 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBnmsSmzp2-MKZgKDbPuSLOSm3DTfNXcR4",
-  authDomain: "quiz-app-73866.firebaseapp.com",
-  projectId:  "quiz-app-73866",
-  storageBucket: "quiz-app-73866.firebasestorage.app",
-  messagingSenderId:  "979165461037",
-  appId: "1:979165461037:web:9feef3af2be3682a1dd6a4",
-  measurementId:  "G-C7XCR7M769"
+  apiKey: 
+  authDomain:
+  projectId:  
+  storageBucket: 
+  messagingSenderId:  
+  appId: 
+  measurementId:  
 };
 
 const app = initializeApp(firebaseConfig);
@@ -32,3 +32,4 @@ export async function ensureAnonAuth() {
   }
   return auth.currentUser;
 }
+
