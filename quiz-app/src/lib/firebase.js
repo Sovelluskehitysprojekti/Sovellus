@@ -19,7 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// ✅ modern persistence setup (no deprecated methods)
+
 export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
     tabManager: persistentMultipleTabManager(),
@@ -32,4 +32,5 @@ export async function ensureAnonAuth() {
   }
   return auth.currentUser;
 }
+
 
