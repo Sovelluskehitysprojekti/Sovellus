@@ -1,123 +1,259 @@
-/* Reset default margins and paddings */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ===== Reset ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Full viewport flex center */
+/* ===== Fluid type scale ===== */
+html { font-size: clamp(16px, 0.9vw + 14px, 20px); }
+
 body, #root {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Arial', sans-serif;
-  background-color: #1e3a8a;
-  color: #fff;
+  height: 100vh; width: 100vw;
+  display: flex; justify-content: center; align-items: center;
+  font-family: "Inter", Arial, sans-serif;
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #111;
 }
 
-/* Container for all pages */
+/* ===== Main card container ===== */
 .app-container {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  background: #fff;
+  border-radius: 20px;
+  padding: clamp(24px, 3vw, 48px);
+  max-width: 1100px;
+  width: min(96vw, 1100px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: #111;
+  transition: width 0.2s ease, padding 0.2s ease;
+}
+
+/* ===== Landing page ===== */
+.landing-page h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  color: #7c3aed;
+  margin-bottom: 0.4em;
+}
+/* Specifics section spacing fix */
+.specifics-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 800px;
-  padding: 20px;
+  gap: 0.8rem; /* adds breathing room between "Want something..." and dropdown */
+  margin-bottom: 1.2rem; /* adds extra space before Start Game */
 }
 
-/* Landing page */
-.landing-page h1 {
-  font-size: 3rem;
-  color: #ffdd57;
-  margin-bottom: 20px;
+/* Keep dropdown label neat inside specifics */
+.specifics-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: #1e3a8a;
 }
+
 
 .landing-page p {
-  font-size: 1.2rem;
-  margin-bottom: 40px;
-  text-align: center;
+  font-size: clamp(1.05rem, 1.2vw, 1.35rem);
+  margin-bottom: 1.2em;
+  color: #374151;
 }
 
-.landing-page button {
-  padding: 15px 40px;
-  font-size: 1.2rem;
-  background: linear-gradient(90deg, #ff0000, #ff9900, #33cc33, #3399ff, #9933ff);
+.selectors {
+  display: flex; gap: clamp(10px, 1.8vw, 22px);
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: 1rem;
+}
+
+label { font-weight: 600; color: #1e3a8a; }
+
+select {
+  margin-left: 8px;
+  padding: clamp(6px, 0.6vw, 10px) clamp(10px, 1vw, 14px);
+  border-radius: 8px; border: 1px solid #d1d5db;
+  font-weight: 500; color: #111; background: #f9fafb;
+  font-size: 1rem;
+}
+
+.primary-btn, .secondary-btn, .ghost-btn {
+  padding: clamp(10px, 1.1vw, 14px) clamp(16px, 1.3vw, 22px);
+  border-radius: 10px; border: none; cursor: pointer;
+  font-weight: 700; transition: all 0.2s ease;
+  font-size: clamp(0.95rem, 1vw, 1.05rem);
+}
+
+.primary-btn {
+  background: linear-gradient(90deg, #7c3aed, #9333ea);
   color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
 }
+.primary-btn:hover { transform: translateY(-1px); }
 
-.landing-page button:hover {
-  transform: scale(1.1);
-}
+.secondary-btn { background: #e0e7ff; color: #1e3a8a; }
+.secondary-btn:hover { background: #c7d2fe; }
 
-/* Trivia page */
-.trivia-score {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  text-align: center;
-  background: #3333ff;
-  padding: 10px 0;
-  border-radius: 8px;
+/* Best score + Recent wrapper */
+.scoreboard {
+  margin-top: 1rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  font-size: clamp(1rem, 1.1vw, 1.15rem);
   width: 100%;
+  text-align: left;
 }
 
+/* ===== Recent list (polished) ===== */
+.recent-wrap { margin-top: .5rem; }
+.recent-header {
+  font-weight: 800; color: #1e3a8a; margin-bottom: .35rem;
+}
+.recent-list {
+  list-style: none; padding: 0;
+  display: grid; gap: 6px;
+}
+.recent-item {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center; gap: 10px;
+}
+.recent-time {
+  font-weight: 700; color: #6b7280; /* muted */
+  min-width: 64px; text-transform: lowercase;
+}
+.recent-score { font-weight: 800; color: #111; }
+.recent-badge {
+  display: inline-block; padding: 4px 8px;
+  border-radius: 999px; font-weight: 700;
+  font-size: .9rem; line-height: 1;
+}
+.recent-badge.topic { background: #eef2ff; color: #3730a3; }
+.recent-badge.diff  { background: #ecfeff; color: #155e75; }
+
+/* ===== Trivia toolbar (stable layout) ===== */
+.trivia-toolbar {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.trivia-meta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  color: #1e3a8a; font-weight: 700; min-width: 0;
+  font-size: clamp(0.95rem, 0.95vw, 1.05rem);
+}
+.toolbar-actions {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 8px; flex-wrap: nowrap; white-space: nowrap; min-width: 0;
+}
+.ghost-btn {
+  background: transparent; border: 1px solid #e5e7eb;
+  color: #374151; line-height: 1; white-space: nowrap;
+}
+.ghost-btn:hover { background: #f3f4f6; }
+
+/* Stack toolbar neatly on small screens */
+@media (max-width: 720px) {
+  .trivia-toolbar { grid-template-columns: 1fr; row-gap: 10px; }
+  .toolbar-actions { justify-content: center; flex-wrap: wrap; }
+}
+
+/* ===== Score line ===== */
+.trivia-header {
+  width: 100%; text-align: right;
+  color: #1e3a8a; font-weight: 800;
+  margin: 6px 0 18px;
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
+}
+
+/* ===== Question card ===== */
 .question-card {
-  background: #002366;
-  padding: 30px;
-  border-radius: 15px;
+  background: #fefefe;
+  padding: clamp(22px, 2.8vw, 40px);
+  border-radius: 18px;
   width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: center; margin-bottom: 20px; color: #111;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.12);
 }
-
 .question-card h2 {
-  margin-bottom: 20px;
+  font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+  line-height: 1.35; margin-bottom: 1rem; color: #111;
 }
 
-.question-card button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: #000;
+/* Answers */
+.answers-grid { display: grid; gap: clamp(8px, 1vw, 12px); }
+.answer-btn {
+  background: #e0e7ff; border: 1px solid #c7d2fe;
+  border-radius: 12px;
+  padding: clamp(12px, 1.2vw, 16px);
+  cursor: pointer; font-weight: 700; color: #111;
+  transition: background 0.25s, transform 0.15s;
+  font-size: clamp(1rem, 1.05vw, 1.125rem);
 }
+.answer-btn:hover { background: #c7d2fe; transform: translateY(-1px); }
 
-/* Result page */
-.result-container {
-  text-align: center;
-  margin-top: 30px;
+/* Correct / Wrong highlight */
+.answer-btn.correct { background-color: #4ade80 !important; color: #fff; }
+.answer-btn.wrong   { background-color: #f87171 !important; color: #fff; }
+
+/* Feedback message */
+.feedback {
+  margin-top: 0.9rem; font-weight: 800;
+  font-size: clamp(1rem, 1.15vw, 1.2rem);
+  color: #1e3a8a; opacity: 0; transition: opacity 0.3s ease;
 }
+.feedback.show { opacity: 1; }
 
+/* ===== Result page ===== */
+.result-container { text-align: center; margin-top: 1.2rem; }
 .result-container h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  margin-bottom: 0.9rem; color: #1e3a8a;
 }
+.result-message { color: #4b5563; margin-bottom: 1rem;
+  font-size: clamp(1rem, 1.1vw, 1.2rem); }
 
-.result-container button {
-  padding: 10px 20px;
-  background: #4d88ff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-/* Loading / Error screen */
+/* ===== Loading & Error ===== */
 .loading-container {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+  color: #1e3a8a;
+}
+
+/* ===== Quick Switch Modal ===== */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 50;
+}
+.modal-card {
+  width: min(640px, 94vw);
+  background: #fff; border-radius: 16px;
+  padding: clamp(18px, 2vw, 24px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.modal-card h3 {
+  font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+  margin-bottom: 0.8rem; color: #1e3a8a;
+}
+.modal-row {
+  display: flex; gap: clamp(10px, 1.4vw, 16px);
+  flex-wrap: wrap; margin-bottom: 0.8rem;
+}
+.modal-row label, .modal-card label {
+  display: flex; flex-direction: column;
+  gap: 6px; font-weight: 700; color: #111;
+}
+.modal-actions {
+  display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px;
+}
+
+/* ===== Small screens: prioritize central card ===== */
+@media (max-width: 720px) {
+  .app-container {
+    width: 98vw; padding: clamp(18px, 3.5vw, 28px); border-radius: 16px;
+  }
+  .question-card { padding: clamp(18px, 4vw, 28px); }
+  .answer-btn {
+    padding: clamp(14px, 3.2vw, 18px);
+    font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+  }
+  .landing-page h1 { font-size: clamp(2rem, 6vw, 2.5rem); }
+  .landing-page p  { font-size: clamp(1.05rem, 3.2vw, 1.2rem); }
 }
