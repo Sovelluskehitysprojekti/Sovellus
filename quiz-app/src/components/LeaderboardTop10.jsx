@@ -147,7 +147,15 @@ export default function LeaderboardTop10() {
   return (
     <div style={{ marginTop: "1rem", width: "100%", textAlign: "left" }}>
       <h3 style={{ color: "#1e3a8a", marginBottom: 6 }}>🌍 Endless Leaderboard (Top 10)</h3>
-      <div style={{ display: "grid", gap: 6 }}>
+      <div
+      style={{
+        display: "grid",
+        gap: 6,
+        maxHeight: "260px",      
+        overflowY: "auto",
+        paddingRight: "4px",     
+      }}
+    >
         {rows.map((r) => (
           <div
             key={r.id || `${r.name}-${r.score}-${r.rank}`}
@@ -176,7 +184,7 @@ export default function LeaderboardTop10() {
               {r.name}
             </div>
             <div style={{ fontWeight: 700, color: "#111", fontSize: "0.95rem" }}>
-              Correct streak: {r.score}
+              Streak: {r.score}
             </div>
             <div style={{ color: "#6b7280", fontSize: "0.85rem", textAlign: "right" }}>
               {formatDate(r.createdAt)}
