@@ -62,13 +62,20 @@ const LandingPage = () => {
     setShowSpecifics(false);
   }, [groupId]);
 
-  const handleStart = () => {
+  const handleStartNormal = () => {
     navigate("/trivia", {
       state: {
         difficulty,
         groupId,
         subcategoryId: hasSpecifics && showSpecifics && subcategoryId ? Number(subcategoryId) : null,
       },
+    });
+  };
+
+  // Go to endless intro page, pass difficulty (if you want to use it later)
+  const handleStartEndless = () => {
+    navigate("/endless", {
+      state: { difficulty },
     });
   };
 
@@ -126,9 +133,21 @@ const LandingPage = () => {
         </div>
       )}
 
-      <button className="primary-btn" onClick={handleStart}>Start Game</button>
+      {/* Normal mode */}
+      <button className="primary-btn" onClick={handleStartNormal}>
+        Start Game
+      </button>
 
-      {/* Best / Recent */}
+      {/* Endless mode */}
+      <button
+        className="secondary-btn"
+        style={{ marginTop: "0.75rem" }}
+        onClick={handleStartEndless}
+      >
+        🔁 Endless mode
+      </button>
+
+      {/* Best / Recent for normal mode */}
       <div className="scoreboard" style={{ width: "100%", textAlign: "left", marginTop: "1.25rem" }}>
         <h3>🏆 Best Score: {bestScore}</h3>
 
@@ -149,7 +168,7 @@ const LandingPage = () => {
         )}
       </div>
 
-      {/* Global leaderboard */}
+      {/* Endless global leaderboard */}
       <LeaderboardTop10 />
     </div>
   );

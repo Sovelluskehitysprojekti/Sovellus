@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import SubmitScore from "./SubmitScore";
 
 const Result = ({ score, total, restartGame, meta }) => {
   // Prevent duplicate saves in React Strict Mode (dev)
@@ -9,11 +8,11 @@ const Result = ({ score, total, restartGame, meta }) => {
     if (didSave.current) return;
     didSave.current = true;
 
-    // Best score
+    // Best score for normal mode
     const best = Number(localStorage.getItem("triviaBestScore") || 0);
     if (score > best) localStorage.setItem("triviaBestScore", String(score));
 
-    // Recent (keep 5)
+    // Recent (keep 5) for normal mode
     const raw = localStorage.getItem("triviaRecentScores");
     let recent = [];
     try {
@@ -59,10 +58,9 @@ const Result = ({ score, total, restartGame, meta }) => {
       <h2>Your Score: {score} / {total}</h2>
       <p className="result-message">{message}</p>
 
-      <button className="primary-btn" onClick={restartGame}>Play Again</button>
-
-      {/* Leaderboard submit */}
-      <SubmitScore score={score} total={total} onSubmitted={() => { /* optional toast */ }} />
+      <button className="primary-btn" onClick={restartGame}>
+        Play Again
+      </button>
     </div>
   );
 };

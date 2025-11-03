@@ -9,10 +9,24 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-const CACHE_KEY = "leaderboardTop10Cache_v1";
+const CACHE_KEY = "endlessLeaderboardTop10Cache_v1";
+
+function formatDate(value) {
+  if (!value) return "";
+  let date;
+  if (value.toDate) {
+    date = value.toDate();
+  } else if (value instanceof Date) {
+    date = value;
+  } else {
+    const t = Date.parse(value);
+    if (Number.isNaN(t)) return "";
+    date = new Date(t);
+  }
+  return date.toLocaleDateString("en-GB");
+}
 
 export default function LeaderboardTop10() {
-  // Seed from cache so something shows after refresh
   const [rows, setRows] = useState(() => {
     try {
       const cached = localStorage.getItem(CACHE_KEY);
@@ -25,9 +39,8 @@ export default function LeaderboardTop10() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // First try: composite-index live query (score desc + createdAt asc)
     const q = query(
-      collection(db, "leaderboard"),
+      collection(db, "endlessLeaderboard"),
       orderBy("score", "desc"),
       orderBy("createdAt", "asc"),
       limit(10)
@@ -36,34 +49,67 @@ export default function LeaderboardTop10() {
     let unsub = onSnapshot(
       q,
       (snap) => {
-        const list = snap.docs.map((d, i) => ({ id: d.id, rank: i + 1, ...d.data() }));
+        const list = snap.docs.map((d, i) => {
+          const data = d.data();
+          return {
+            id: d.id,
+            rank: i + 1,
+            name: data.name,
+            score: data.score,
+            createdAt: data.createdAt,
+          };
+        });
         setRows(list);
         setLoading(false);
         setError("");
         try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify(list));
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify(
+              list.map((r) => ({
+                ...r,
+                createdAt: r.createdAt?.toDate?.() || r.createdAt,
+              }))
+            )
+          );
         } catch {}
       },
       async (err) => {
-        console.warn("[Leaderboard] Composite query failed:", err?.code, err?.message);
-        // If the composite index is missing or still building, fall back to a single-field query.
-        setError(""); // clear visible error; we'll try fallback
+        console.warn("[Endless Leaderboard] Composite query failed:", err?.code, err?.message);
+        setError("");
         try {
           const qFallback = query(
-            collection(db, "leaderboard"),
+            collection(db, "endlessLeaderboard"),
             orderBy("score", "desc"),
             limit(10)
           );
           const snap = await getDocs(qFallback);
-          const list = snap.docs.map((d, i) => ({ id: d.id, rank: i + 1, ...d.data() }));
+          const list = snap.docs.map((d, i) => {
+            const data = d.data();
+            return {
+              id: d.id,
+              rank: i + 1,
+              name: data.name,
+              score: data.score,
+              createdAt: data.createdAt,
+            };
+          });
           setRows(list);
           setLoading(false);
           try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(list));
+            localStorage.setItem(
+              CACHE_KEY,
+              JSON.stringify(
+                list.map((r) => ({
+                  ...r,
+                  createdAt: r.createdAt?.toDate?.() || r.createdAt,
+                }))
+              )
+            );
           } catch {}
         } catch (e2) {
-          console.error("[Leaderboard] Fallback query failed:", e2);
-          setError("Failed to load leaderboard.");
+          console.error("[Endless Leaderboard] Fallback query failed:", e2);
+          setError("Failed to load endless leaderboard.");
           setLoading(false);
         }
       }
@@ -77,7 +123,7 @@ export default function LeaderboardTop10() {
   if (loading && rows.length === 0) {
     return (
       <div style={{ marginTop: "1rem", width: "100%", textAlign: "left", color: "#6b7280" }}>
-        Loading leaderboard…
+        Loading endless leaderboard…
       </div>
     );
   }
@@ -93,21 +139,21 @@ export default function LeaderboardTop10() {
   if (rows.length === 0) {
     return (
       <div style={{ marginTop: "1rem", width: "100%", textAlign: "left", color: "#6b7280" }}>
-        No scores yet. Be the first!
+        No endless scores yet. Be the first!
       </div>
     );
   }
 
   return (
     <div style={{ marginTop: "1rem", width: "100%", textAlign: "left" }}>
-      <h3 style={{ color: "#1e3a8a", marginBottom: 6 }}>🌍 Leaderboard (Top 10)</h3>
+      <h3 style={{ color: "#1e3a8a", marginBottom: 6 }}>🌍 Endless Leaderboard (Top 10)</h3>
       <div style={{ display: "grid", gap: 6 }}>
         {rows.map((r) => (
           <div
             key={r.id || `${r.name}-${r.score}-${r.rank}`}
             style={{
               display: "grid",
-              gridTemplateColumns: "40px 1fr auto",
+              gridTemplateColumns: "40px 1fr auto auto",
               gap: 10,
               alignItems: "center",
               background: "#f8fafc",
@@ -129,7 +175,12 @@ export default function LeaderboardTop10() {
             >
               {r.name}
             </div>
-            <div style={{ fontWeight: 800, color: "#111" }}>{r.score}/10</div>
+            <div style={{ fontWeight: 700, color: "#111", fontSize: "0.95rem" }}>
+              Correct streak: {r.score}
+            </div>
+            <div style={{ color: "#6b7280", fontSize: "0.85rem", textAlign: "right" }}>
+              {formatDate(r.createdAt)}
+            </div>
           </div>
         ))}
       </div>

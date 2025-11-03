@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { db, ensureAnonAuth } from "../lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-export default function SubmitScore({ score, total, onSubmitted }) {
-  const [name, setName] = useState(() => localStorage.getItem("lastName") || "");
+export default function SubmitScore({ score }) {
+  const [name, setName] = useState(() => localStorage.getItem("endlessLastName") || "");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Persist last used name locally
+  // Persist last used name for endless mode
   useEffect(() => {
-    localStorage.setItem("lastName", name);
+    localStorage.setItem("endlessLastName", name);
   }, [name]);
 
   async function handleSubmit() {
@@ -23,16 +23,13 @@ export default function SubmitScore({ score, total, onSubmitted }) {
     try {
       setBusy(true);
       await ensureAnonAuth();
-      await addDoc(collection(db, "leaderboard"), {
+      await addDoc(collection(db, "endlessLeaderboard"), {
         name: trimmed,
-        score: Math.max(0, Math.min(10, Number(score))), // clamp 0..10
-        createdAt: serverTimestamp(),                     // required by rules
+        score: Math.max(0, Number(score)), // streak length, no upper cap
+        createdAt: serverTimestamp(),      // server-side time
       });
 
-      // Optional hook for a toast
-      onSubmitted?.();
-
-      // ✅ Redirect to landing so the user sees the leaderboard
+      // Back to landing so the user sees the leaderboard
       navigate("/", { replace: true });
     } catch (e) {
       console.error(e);
@@ -42,10 +39,13 @@ export default function SubmitScore({ score, total, onSubmitted }) {
     }
   }
 
+  // If they got 0, don't bother asking to submit
+  if (score <= 0) return null;
+
   return (
     <div style={{ marginTop: 16 }}>
       <div style={{ fontWeight: 700, marginBottom: 6 }}>
-        Add your score to the global leaderboard?
+        Add your endless streak to the global leaderboard?
       </div>
       <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
         <input
@@ -60,9 +60,13 @@ export default function SubmitScore({ score, total, onSubmitted }) {
           {busy ? "Saving..." : "Submit"}
         </button>
       </div>
-      {error && <div style={{ marginTop: 6, color: "#b91c1c", fontWeight: 600 }}>{error}</div>}
+      {error && (
+        <div style={{ marginTop: 6, color: "#b91c1c", fontWeight: 600 }}>
+          {error}
+        </div>
+      )}
       <div style={{ marginTop: 6, color: "#6b7280" }}>
-        You’ll be taken to the leaderboard after submitting.
+        You’ll be taken to the endless leaderboard after submitting.
       </div>
     </div>
   );

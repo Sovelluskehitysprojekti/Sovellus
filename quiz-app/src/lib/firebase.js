@@ -7,19 +7,19 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: 
-  authDomain:
-  projectId:  
-  storageBucket: 
-  messagingSenderId:  
-  appId: 
-  measurementId:  
+  apiKey: "AIzaSyBnmsSmzp2-MKZgKDbPuSLOSm3DTfNXcR4",
+  authDomain: "quiz-app-73866.firebaseapp.com",
+  projectId:  "quiz-app-73866",
+  storageBucket: "quiz-app-73866.firebasestorage.app",
+  messagingSenderId:  "979165461037",
+  appId: "1:979165461037:web:9feef3af2be3682a1dd6a4",
+  measurementId:  "G-C7XCR7M769"
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-
+// ✅ modern persistence setup (no deprecated methods)
 export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
     tabManager: persistentMultipleTabManager(),
@@ -32,5 +32,3 @@ export async function ensureAnonAuth() {
   }
   return auth.currentUser;
 }
-
-
