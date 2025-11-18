@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 const Result = ({ score, total, restartGame, meta }) => {
-  // Prevent duplicate saves in React Strict Mode (dev)
+ 
   const didSave = useRef(false);
 
   useEffect(() => {
@@ -66,3 +66,4 @@ const Result = ({ score, total, restartGame, meta }) => {
 };
 
 export default Result;
+
