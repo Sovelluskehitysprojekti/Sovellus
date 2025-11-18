@@ -6,7 +6,7 @@ import { getGroupById } from "../utils/categoryGroups";
 import QuickSwitchModal from "../components/QuickSwitchModal";
 import { ensureToken, requestNewToken, resetToken } from "../utils/opentdbToken";
 
-// Fisher–Yates shuffle
+
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -25,7 +25,7 @@ const Trivia = () => {
   const startGroupId = location.state?.groupId || "any";
   const startSubcat = location.state?.subcategoryId || null;
 
-  // editable in-place (QuickSwitch)
+
   const [difficulty, setDifficulty] = useState(startDifficulty);
   const [groupId, setGroupId] = useState(startGroupId);
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(startSubcat);
@@ -38,7 +38,7 @@ const Trivia = () => {
   const [error, setError] = useState(null);
   const [showQuickSwitch, setShowQuickSwitch] = useState(false);
 
-  // build try-list for group (shuffled)
+ 
   const categoryTryList = useMemo(() => {
     if (selectedSubcategoryId) return [selectedSubcategoryId];
     const group = getGroupById(groupId);
@@ -46,7 +46,7 @@ const Trivia = () => {
     return shuffle(group.categoryIds);
   }, [groupId, selectedSubcategoryId]);
 
-  // Fetch with caching + token + 429 retry + group fallback
+  
   const fetchQuestions = async (forceFresh = false, retryCount = 0) => {
     setLoading(true);
     setError(null);
@@ -225,3 +225,4 @@ const Trivia = () => {
 };
 
 export default Trivia;
+
