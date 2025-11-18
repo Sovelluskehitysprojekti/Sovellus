@@ -16,7 +16,7 @@ Projektin tavoitteena on toteuttaa selainpohjainen tietovisapeli, joka hyödynt�
 - Sovellus toimii selaimessa ja sitä voi laajentaa myöhemmin.
 
 ### Resurssit
-- Ohjelmistot: React, npm, Vite,  mahdollinen UI-kirjasto (esim. TailwindCSS / Material UI).
+- Ohjelmistot: React, npm, Vite.
 - Rajapinta: Open Trivia Database API.
 - Työkalut: Git ja GitHub versionhallintaan, Visual Studio Code kehitykseen. Firebase tietokantana.
 - Henkilöresurssit: 2 hengen tiimi.
