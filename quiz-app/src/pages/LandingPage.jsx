@@ -72,7 +72,7 @@ const LandingPage = () => {
     });
   };
 
-  // Go to endless intro page, pass difficulty (if you want to use it later)
+ 
   const handleStartEndless = () => {
     navigate("/endless", {
       state: { difficulty },
@@ -175,3 +175,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
